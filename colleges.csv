@@ -1,0 +1,50 @@
+College,Category,ClosingRank
+AIIMS Delhi,General,55
+AIIMS Delhi,OBC,250
+AIIMS Delhi,SC,1000
+AIIMS Delhi,ST,2000
+
+Maulana Azad Medical College,General,1200
+Maulana Azad Medical College,OBC,2500
+Maulana Azad Medical College,SC,12000
+Maulana Azad Medical College,ST,20000
+
+VMMC Delhi,General,1500
+VMMC Delhi,OBC,3000
+VMMC Delhi,SC,15000
+VMMC Delhi,ST,25000
+
+King George Medical University,General,4000
+King George Medical University,OBC,7000
+King George Medical University,SC,40000
+King George Medical University,ST,60000
+
+Grant Medical College Mumbai,General,6000
+Grant Medical College Mumbai,OBC,9000
+Grant Medical College Mumbai,SC,50000
+Grant Medical College Mumbai,ST,70000
+
+BHU Varanasi,General,3000
+BHU Varanasi,OBC,6000
+BHU Varanasi,SC,30000
+BHU Varanasi,ST,50000
+
+Madras Medical College,General,8000
+Madras Medical College,OBC,12000
+Madras Medical College,SC,60000
+Madras Medical College,ST,90000
+
+SMS Medical College Jaipur,General,7000
+SMS Medical College Jaipur,OBC,11000
+SMS Medical College Jaipur,SC,55000
+SMS Medical College Jaipur,ST,85000
+
+Government Medical College Nagpur,General,12000
+Government Medical College Nagpur,OBC,18000
+Government Medical College Nagpur,SC,70000
+Government Medical College Nagpur,ST,100000
+
+Private Medical College A,General,500000
+Private Medical College A,OBC,550000
+Private Medical College A,SC,700000
+Private Medical College A,ST,800000
