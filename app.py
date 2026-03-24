@@ -47,7 +47,24 @@ category = st.selectbox("Select Category", ["General", "OBC", "SC", "ST"])
 
 # Predict
 if st.button("🔍 Predict College"):
-    st.success("🎓 You may get a good medical college")
+    # Load dataset
+data = pd.read_csv("colleges.csv")
+
+if st.button("🔍 Predict College"):
+
+    possible = data[
+        (data["Category"] == category) &
+        (data["ClosingRank"] >= rank)
+    ]
+
+    if not possible.empty:
+        st.success("🎓 Possible Colleges:")
+
+        for i in possible["College"].head(5):
+            st.write("👉", i)
+
+    else:
+        st.error("❌ No college found for this rank")
     st.warning("⚠️ For accurate counseling, contact us below")
 
 # Lead form
