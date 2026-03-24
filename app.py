@@ -1,3 +1,4 @@
+import urllib.parse
 import streamlit as st
 import pandas as pd
 import requests
@@ -110,9 +111,11 @@ name = st.text_input("Your Name")
 phone = st.text_input("WhatsApp Number")
 
 if st.button("🚀 Submit Details"):
+
     if name == "" or phone == "":
         st.warning("Please fill all details")
     else:
+        # Save to Google Sheet
         url = "https://sheetdb.io/api/v1/p8w5tq1ash2sh"
 
         data_to_send = {
@@ -128,9 +131,31 @@ if st.button("🚀 Submit Details"):
             response = requests.post(url, json=data_to_send)
 
             if response.status_code in [200, 201]:
-                st.success("✅ Submitted! We will contact you soon")
+                st.success("✅ Submitted Successfully!")
+
+                # -------------------------------
+                # WHATSAPP AUTO MESSAGE
+                # -------------------------------
+                message = f"""
+Hello MedImperial,
+
+My Name: {name}
+NEET Rank: {rank}
+Category: {category}
+
+Please guide me for admission.
+"""
+
+                encoded_message = urllib.parse.quote(message)
+
+                whatsapp_number = "919232119055"  # your number (91 + number)
+
+                whatsapp_url = f"https://wa.me/{whatsapp_number}?text={encoded_message}"
+
+                st.markdown(f"[👉 Click here to WhatsApp us](%s)" % whatsapp_url)
+
             else:
-                st.error(f"Error: {response.text}")
+                st.error("Error saving data")
 
         except Exception as e:
             st.error(f"Error: {e}")
