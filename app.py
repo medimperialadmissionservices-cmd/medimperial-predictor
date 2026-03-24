@@ -1,7 +1,7 @@
-import urllib.parse
 import streamlit as st
 import pandas as pd
 import requests
+import urllib.parse
 
 # -------------------------------
 # PAGE CONFIG
@@ -55,7 +55,7 @@ h1 {
 """, unsafe_allow_html=True)
 
 # -------------------------------
-# LOAD DATA
+# LOAD DATASET
 # -------------------------------
 try:
     data = pd.read_csv("colleges.csv")
@@ -82,7 +82,11 @@ category = st.selectbox(
     ["General", "OBC", "SC", "ST"]
 )
 
+# -------------------------------
+# PREDICTION
+# -------------------------------
 if st.button("🔍 Predict College"):
+
     if data.empty:
         st.error("Dataset not loaded")
     else:
@@ -93,15 +97,34 @@ if st.button("🔍 Predict College"):
 
         if not possible.empty:
             st.markdown('<div class="success-box">🎓 Possible Colleges:</div>', unsafe_allow_html=True)
+
             for i in possible["College"].head(5):
                 st.write("👉", i)
+
         else:
             st.markdown('<div class="warning-box">⚠️ Try private colleges or higher budget options</div>', unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
 
 # -------------------------------
-# CTA
+# ₹999 FUNNEL
+# -------------------------------
+st.markdown("""
+---
+### 🎯 Get Expert Counselling (₹999 Only)
+
+✅ Personalized college list  
+✅ Budget planning  
+✅ State + All India counselling guidance  
+✅ 1:1 WhatsApp support  
+
+🔥 Limited slots available!
+""")
+
+st.error("🔥 Only 10 counselling slots available today")
+
+# -------------------------------
+# LEAD FORM
 # -------------------------------
 st.markdown("### 📞 Get Personalized Counseling")
 
@@ -109,8 +132,6 @@ st.markdown('<div class="card">', unsafe_allow_html=True)
 
 name = st.text_input("Your Name")
 phone = st.text_input("WhatsApp Number")
-
-import urllib.parse
 
 if st.button("🚀 Submit Details"):
 
@@ -132,13 +153,13 @@ if st.button("🚀 Submit Details"):
             requests.post(url, json=data_to_send)
 
             message = f"""
-Hi, I checked my NEET rank.
+Hi, I checked my NEET rank on your predictor.
 
 Name: {name}
 Rank: {rank}
 Category: {category}
 
-I want full counselling (₹999).
+I want full counselling (₹999). Please guide me.
 """
 
             encoded_message = urllib.parse.quote(message)
@@ -147,38 +168,12 @@ I want full counselling (₹999).
 
             whatsapp_url = f"https://wa.me/{whatsapp_number}?text={encoded_message}"
 
+            # AUTO REDIRECT TO WHATSAPP
             st.markdown(f"""
                 <meta http-equiv="refresh" content="2;url={whatsapp_url}">
             """, unsafe_allow_html=True)
 
-            st.success("Redirecting to WhatsApp...")
-
-        except:
-            st.error("Error")
-
-                # -------------------------------
-                # WHATSAPP AUTO MESSAGE
-                # -------------------------------
-                message = f"""
-Hello MedImperial,
-
-My Name: {name}
-NEET Rank: {rank}
-Category: {category}
-
-Please guide me for admission.
-"""
-
-                encoded_message = urllib.parse.quote(message)
-
-                whatsapp_number = "919232119055"  # your number (91 + number)
-
-                whatsapp_url = f"https://wa.me/{whatsapp_number}?text={encoded_message}"
-
-                st.markdown(f"[👉 Click here to WhatsApp us](%s)" % whatsapp_url)
-
-            else:
-                st.error("Error saving data")
+            st.success("✅ Redirecting to WhatsApp...")
 
         except Exception as e:
             st.error(f"Error: {e}")
