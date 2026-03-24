@@ -110,12 +110,13 @@ st.markdown('<div class="card">', unsafe_allow_html=True)
 name = st.text_input("Your Name")
 phone = st.text_input("WhatsApp Number")
 
+import urllib.parse
+
 if st.button("🚀 Submit Details"):
 
     if name == "" or phone == "":
         st.warning("Please fill all details")
     else:
-        # Save to Google Sheet
         url = "https://sheetdb.io/api/v1/p8w5tq1ash2sh"
 
         data_to_send = {
@@ -128,10 +129,32 @@ if st.button("🚀 Submit Details"):
         }
 
         try:
-            response = requests.post(url, json=data_to_send)
+            requests.post(url, json=data_to_send)
 
-            if response.status_code in [200, 201]:
-                st.success("✅ Submitted Successfully!")
+            message = f"""
+Hi, I checked my NEET rank.
+
+Name: {name}
+Rank: {rank}
+Category: {category}
+
+I want full counselling (₹999).
+"""
+
+            encoded_message = urllib.parse.quote(message)
+
+            whatsapp_number = "919232119055"
+
+            whatsapp_url = f"https://wa.me/{whatsapp_number}?text={encoded_message}"
+
+            st.markdown(f"""
+                <meta http-equiv="refresh" content="2;url={whatsapp_url}">
+            """, unsafe_allow_html=True)
+
+            st.success("Redirecting to WhatsApp...")
+
+        except:
+            st.error("Error")
 
                 # -------------------------------
                 # WHATSAPP AUTO MESSAGE
