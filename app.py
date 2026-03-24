@@ -2,11 +2,12 @@ import streamlit as st
 import pandas as pd
 import requests
 from datetime import datetime
+import urllib.parse
 
 # ---------- PAGE CONFIG ----------
 st.set_page_config(page_title="MedImperial Predictor", layout="centered")
 
-# ---------- CUSTOM PREMIUM UI ----------
+# ---------- PREMIUM UI ----------
 st.markdown("""
 <style>
 body {
@@ -50,7 +51,7 @@ st.write("🎯 Predict your medical college instantly")
 rank = st.number_input("Enter your NEET Rank", min_value=1)
 category = st.selectbox("Select Category", ["General", "OBC", "SC", "ST"])
 
-# ---------- SIMPLE PREDICTION ----------
+# ---------- PREDICTION ----------
 if st.button("🔍 Predict College"):
     if rank < 10000:
         st.success("🎓 Top Government College Possible")
@@ -73,11 +74,12 @@ url = "https://sheetdb.io/api/v1/p8w5tq1ash2sh"
 if st.button("🚀 Submit Details"):
     if name and phone:
 
+        # ---------- DATA ----------
         data = {
             "data": [{
                 "name": name,
                 "phone": phone,
-                "rank": rank,
+                "rank": str(rank),
                 "category": category,
                 "time": str(datetime.now())
             }]
@@ -86,10 +88,13 @@ if st.button("🚀 Submit Details"):
         try:
             response = requests.post(url, json=data)
 
+            # ---------- DEBUG ----------
+            # st.write(response.text)
+
             if response.status_code == 201:
                 st.success("✅ Details submitted successfully!")
 
-                # ---------- WHATSAPP MESSAGE ----------
+                # ---------- WHATSAPP ----------
                 whatsapp_number = "919232119055"
 
                 message = f"""Hello MedImperial,
@@ -98,9 +103,10 @@ My NEET Rank: {rank}
 Category: {category}
 I need counseling."""
 
-                whatsapp_url = f"https://wa.me/{whatsapp_number}?text={message}"
+                encoded_message = urllib.parse.quote(message)
+                whatsapp_url = f"https://wa.me/{whatsapp_number}?text={encoded_message}"
 
-                # ---------- BUTTON (NO AUTO REDIRECT) ----------
+                # ---------- BUTTON ----------
                 st.markdown(f"""
                 <a href="{whatsapp_url}" target="_blank">
                     <button style="
@@ -119,9 +125,11 @@ I need counseling."""
 
             else:
                 st.error("❌ Error saving data")
+                st.write(response.text)  # shows actual error
 
-        except:
+        except Exception as e:
             st.error("❌ Connection error")
+            st.write(e)
 
     else:
         st.warning("⚠️ Please fill all details")
