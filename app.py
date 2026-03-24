@@ -8,7 +8,53 @@ import requests
 st.set_page_config(page_title="MedImperial Predictor", layout="centered")
 
 # -------------------------------
-# LOAD DATASET
+# CUSTOM PREMIUM CSS
+# -------------------------------
+st.markdown("""
+<style>
+body {
+    background-color: #f5f9ff;
+}
+.main {
+    background-color: #f5f9ff;
+}
+h1 {
+    color: #0a3d62;
+    text-align: center;
+}
+.stButton>button {
+    background-color: #0a3d62;
+    color: white;
+    border-radius: 10px;
+    height: 3em;
+    width: 100%;
+    font-weight: bold;
+}
+.stButton>button:hover {
+    background-color: #3c6382;
+}
+.card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+.success-box {
+    background-color: #d4edda;
+    padding: 15px;
+    border-radius: 10px;
+}
+.warning-box {
+    background-color: #fff3cd;
+    padding: 15px;
+    border-radius: 10px;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# -------------------------------
+# LOAD DATA
 # -------------------------------
 try:
     data = pd.read_csv("colleges.csv")
@@ -17,15 +63,17 @@ except:
     data = pd.DataFrame()
 
 # -------------------------------
-# TITLE + LOGO
+# HEADER
 # -------------------------------
 st.image("logo.png", width=120)
-st.title("MedImperial NEET Predictor")
-st.markdown("🎯 Predict your medical college instantly")
+st.markdown("<h1>MedImperial NEET Predictor</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center;'>🎯 Predict your medical college instantly</p>", unsafe_allow_html=True)
 
 # -------------------------------
-# INPUT SECTION
+# INPUT CARD
 # -------------------------------
+st.markdown('<div class="card">', unsafe_allow_html=True)
+
 rank = st.number_input("Enter your NEET Rank", min_value=1, step=1)
 
 category = st.selectbox(
@@ -33,11 +81,7 @@ category = st.selectbox(
     ["General", "OBC", "SC", "ST"]
 )
 
-# -------------------------------
-# PREDICTION BUTTON
-# -------------------------------
 if st.button("🔍 Predict College"):
-
     if data.empty:
         st.error("Dataset not loaded")
     else:
@@ -47,29 +91,25 @@ if st.button("🔍 Predict College"):
         ]
 
         if not possible.empty:
-            st.success("🎓 Possible Colleges:")
-
+            st.markdown('<div class="success-box">🎓 Possible Colleges:</div>', unsafe_allow_html=True)
             for i in possible["College"].head(5):
                 st.write("👉", i)
-
         else:
-            st.warning("⚠️ Try private colleges or higher budget options")
+            st.markdown('<div class="warning-box">⚠️ Try private colleges or higher budget options</div>', unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
 
 # -------------------------------
-# CTA MESSAGE
+# CTA
 # -------------------------------
-st.info("📞 For accurate counselling, contact us below")
+st.markdown("### 📞 Get Personalized Counseling")
 
-# -------------------------------
-# LEAD FORM
-# -------------------------------
-st.subheader("📞 Get Personalized Counseling")
+st.markdown('<div class="card">', unsafe_allow_html=True)
 
 name = st.text_input("Your Name")
 phone = st.text_input("WhatsApp Number")
 
 if st.button("🚀 Submit Details"):
-
     if name == "" or phone == "":
         st.warning("Please fill all details")
     else:
@@ -95,8 +135,10 @@ if st.button("🚀 Submit Details"):
         except Exception as e:
             st.error(f"Error: {e}")
 
+st.markdown('</div>', unsafe_allow_html=True)
+
 # -------------------------------
 # FOOTER
 # -------------------------------
 st.markdown("---")
-st.markdown("📍 MedImperial Admission Services | 📞 9232119055")
+st.markdown("<center>📍 MedImperial Admission Services | 📞 9232119055</center>", unsafe_allow_html=True)
