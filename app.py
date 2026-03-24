@@ -83,7 +83,7 @@ if st.button("🚀 Submit Details"):
         except:
             st.error("Connection error")
 
-url = "https://sheetdb.io/api/v1/5crl7kc5v0wp1"
+url = "https://sheetdb.io/api/v1/p8w5tq1ash2sh"
 # Footer
 st.markdown("---")
 st.markdown("📍 MedImperial Admission Services | 📞 9232119055")
