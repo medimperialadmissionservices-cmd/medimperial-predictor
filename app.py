@@ -70,18 +70,19 @@ if st.button("🚀 Submit Details"):
             }]
         }
 
-        url = "PASTE_YOUR_API_LINK_HERE"
+        url = "https://sheetdb.io/api/v1/p8w5tq1ash2sh"
 
         try:
             response = requests.post(url, json=data)
 
-            if response.status_code == 201:
+            # 👇 IMPORTANT CHANGE
+            if response.status_code in [200, 201]:
                 st.success("✅ Submitted! We will contact you soon")
             else:
-                st.error("Error saving data")
+                st.error(f"Error: {response.text}")
 
-        except:
-            st.error("Connection error")
+        except Exception as e:
+            st.error(f"Error: {e}")
 
 url = "https://sheetdb.io/api/v1/p8w5tq1ash2sh"
 # Footer
