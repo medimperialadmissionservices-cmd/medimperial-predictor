@@ -1,74 +1,69 @@
-import requests
 import streamlit as st
 import pandas as pd
-import os
+import requests
 
-# Page config
+# -------------------------------
+# PAGE CONFIG
+# -------------------------------
 st.set_page_config(page_title="MedImperial Predictor", layout="centered")
 
-# Custom CSS (premium look)
-st.markdown("""
-<style>
-body {
-    background-color: #f5f9ff;
-}
-.main {
-    background-color: #f5f9ff;
-}
-h1 {
-    color: #0a3d62;
-    text-align: center;
-}
-.stButton>button {
-    background-color: #0a3d62;
-    color: white;
-    border-radius: 10px;
-    height: 45px;
-    width: 100%;
-}
-.stTextInput>div>div>input {
-    border-radius: 10px;
-}
-</style>
-""", unsafe_allow_html=True)
+# -------------------------------
+# LOAD DATASET
+# -------------------------------
+try:
+    data = pd.read_csv("colleges.csv")
+except:
+    st.error("❌ colleges.csv file not found")
+    data = pd.DataFrame()
 
-# Logo + Title (centered)
-col1, col2, col3 = st.columns([1,2,1])
+# -------------------------------
+# TITLE + LOGO
+# -------------------------------
+st.image("logo.png", width=120)
+st.title("MedImperial NEET Predictor")
+st.markdown("🎯 Predict your medical college instantly")
 
-with col2:
-    st.image("logo.png", width=120)
-    st.markdown("<h1>MedImperial NEET Predictor</h1>", unsafe_allow_html=True)
+# -------------------------------
+# INPUT SECTION
+# -------------------------------
+rank = st.number_input("Enter your NEET Rank", min_value=1, step=1)
 
-st.markdown("### 🎯 Predict your medical college instantly")
+category = st.selectbox(
+    "Select Category",
+    ["General", "OBC", "SC", "ST"]
+)
 
-# Input section
-rank = st.number_input("Enter your NEET Rank", min_value=1)
-category = st.selectbox("Select Category", ["General", "OBC", "SC", "ST"])
-
-# Predict
-if st.button("🔍 Predict College"):
-    # Load dataset
-data = pd.read_csv("colleges.csv")
-
+# -------------------------------
+# PREDICTION BUTTON
+# -------------------------------
 if st.button("🔍 Predict College"):
 
-    possible = data[
-        (data["Category"] == category) &
-        (data["ClosingRank"] >= rank)
-    ]
-
-    if not possible.empty:
-        st.success("🎓 Possible Colleges:")
-
-        for i in possible["College"].head(5):
-            st.write("👉", i)
-
+    if data.empty:
+        st.error("Dataset not loaded")
     else:
-        st.error("❌ No college found for this rank")
-    st.warning("⚠️ For accurate counseling, contact us below")
+        possible = data[
+            (data["Category"] == category) &
+            (data["ClosingRank"] >= rank)
+        ]
 
-# Lead form
-st.markdown("## 📞 Get Personalized Counseling")
+        if not possible.empty:
+            st.success("🎓 Possible Colleges:")
+
+            for i in possible["College"].head(5):
+                st.write("👉", i)
+
+        else:
+            st.warning("⚠️ Try private colleges or higher budget options")
+
+# -------------------------------
+# CTA MESSAGE
+# -------------------------------
+st.info("📞 For accurate counselling, contact us below")
+
+# -------------------------------
+# LEAD FORM
+# -------------------------------
+st.subheader("📞 Get Personalized Counseling")
 
 name = st.text_input("Your Name")
 phone = st.text_input("WhatsApp Number")
@@ -78,7 +73,9 @@ if st.button("🚀 Submit Details"):
     if name == "" or phone == "":
         st.warning("Please fill all details")
     else:
-        data = {
+        url = "https://sheetdb.io/api/v1/p8w5tq1ash2sh"
+
+        data_to_send = {
             "data": [{
                 "Name": name,
                 "Phone": phone,
@@ -87,12 +84,9 @@ if st.button("🚀 Submit Details"):
             }]
         }
 
-        url = "https://sheetdb.io/api/v1/p8w5tq1ash2sh"
-
         try:
-            response = requests.post(url, json=data)
+            response = requests.post(url, json=data_to_send)
 
-            # 👇 IMPORTANT CHANGE
             if response.status_code in [200, 201]:
                 st.success("✅ Submitted! We will contact you soon")
             else:
@@ -101,7 +95,8 @@ if st.button("🚀 Submit Details"):
         except Exception as e:
             st.error(f"Error: {e}")
 
-url = "https://sheetdb.io/api/v1/p8w5tq1ash2sh"
-# Footer
+# -------------------------------
+# FOOTER
+# -------------------------------
 st.markdown("---")
 st.markdown("📍 MedImperial Admission Services | 📞 9232119055")
