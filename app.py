@@ -69,7 +69,7 @@ name = st.text_input("Your Name")
 phone = st.text_input("WhatsApp Number")
 
 # ---------- YOUR SHEETDB API ----------
-url = "https://sheetdb.io/api/v1/p8w5tq1ash2sh"
+url = "https://sheetdb.io/api/v1/1g9tk9hphhl0k"
 
 if st.button("🚀 Submit Details"):
     if name and phone:
