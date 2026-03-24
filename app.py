@@ -1,3 +1,4 @@
+import requests
 import streamlit as st
 import pandas as pd
 import os
@@ -56,26 +57,33 @@ name = st.text_input("Your Name")
 phone = st.text_input("WhatsApp Number")
 
 if st.button("🚀 Submit Details"):
+
     if name == "" or phone == "":
         st.warning("Please fill all details")
     else:
-        data = pd.DataFrame({
-            "Name": [name],
-            "Phone": [phone],
-            "Rank": [rank],
-            "Category": [category]
-        })
+        data = {
+            "data": [{
+                "Name": name,
+                "Phone": phone,
+                "Rank": rank,
+                "Category": category
+            }]
+        }
 
-        file = "leads.csv"
+        url = "PASTE_YOUR_API_LINK_HERE"
 
-        if os.path.exists(file):
-            old = pd.read_csv(file)
-            data = pd.concat([old, data], ignore_index=True)
+        try:
+            response = requests.post(url, json=data)
 
-        data.to_csv(file, index=False)
+            if response.status_code == 201:
+                st.success("✅ Submitted! We will contact you soon")
+            else:
+                st.error("Error saving data")
 
-        st.success("✅ Submitted! Our team will contact you soon")
+        except:
+            st.error("Connection error")
 
+url = https://sheetdb.io/api/v1/5crl7kc5v0wp1
 # Footer
 st.markdown("---")
 st.markdown("📍 MedImperial Admission Services | 📞 9232119055")
